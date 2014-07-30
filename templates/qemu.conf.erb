@@ -197,15 +197,18 @@
 #       user = "100"    # A user named "100" or a user with uid=100
 #
 #user = "root"
+<% if @qemu_user %>user = "<%= @qemu_user %>"<% end -%>
 
 # The group for QEMU processes run by the system instance. It can be
 # specified in a similar way to user.
 #group = "root"
+<% if @qemu_group %>group = "<%= @qemu_user %>"<% end -%>
 
 # Whether libvirt should dynamically change file ownership
 # to match the configured user/group above. Defaults to 1.
 # Set to 0 to disable file ownership changes.
 #dynamic_ownership = 1
+<% if @qemu_user or @qemu_group %>dynamic_ownership = 0<% end -%>
 
 
 # What cgroup controllers to make use of with QEMU guests

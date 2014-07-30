@@ -7,6 +7,7 @@ class libvirt::params {
       $qemu_tools       = 'qemu-img'
       $kvm_package      = 'qemu-kvm'
       $qemu_conf        = '/etc/libvirt/qemu.conf'
+      $libvirtd_conf    = '/etc/libvirt/libvirtd.conf'
     }
     default:   {
     }

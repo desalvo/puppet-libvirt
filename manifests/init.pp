@@ -15,12 +15,16 @@
 # [*vnc_password*]
 #   Set the VNC password
 #
+# [*live_migration*]
+#   Set this to true to enable live migration
+#
 # === Examples
 #
 #  class {'libvirt':
-#    virt_type    => 'kvm',
-#    vnc_listen   => "0.0.0.0",
-#    vnc_password => "mysafepass",
+#    virt_type      => 'kvm',
+#    vnc_listen     => "0.0.0.0",
+#    vnc_password   => "mysafepass",
+#    live_migration => true,
 #  }
 #
 # === Authors
@@ -34,7 +38,10 @@
 class libvirt (
   $virt_type = 'kvm',
   $vnc_listen = undef,
-  $vnc_password = undef
+  $vnc_password = undef,
+  $live_migration = false,
+  $qemu_user = false,
+  $qemu_group = false,
 ) inherits params {
 
   package { $libvirt::params::libvirt_packages: ensure => latest }
@@ -44,6 +51,19 @@ class libvirt (
           package { $libvirt::params::kvm_package: ensure => latest, notify => Service[$libvirt::params::libvirt_service] }
       }
       default: {}
+  }
+
+  if ($live_migration) {
+      augeas{ "libvirtd live migration" :
+         context => "/files${libvirt::params::libvirtd_conf}",
+         changes => [
+             "set listen_tls 0",
+             "set listen_tcp 1",
+             "set auth_tcp none",
+         ],
+         notify => Service[$libvirt::params::libvirt_service]
+      }
+
   }
 
   file { $libvirt::params::qemu_conf:
