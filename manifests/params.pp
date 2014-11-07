@@ -8,6 +8,7 @@ class libvirt::params {
       $kvm_package      = 'qemu-kvm'
       $qemu_conf        = '/etc/libvirt/qemu.conf'
       $libvirtd_conf    = '/etc/libvirt/libvirtd.conf'
+      $libvirtd_sysconf = '/etc/sysconfig/libvirtd'
     }
     default:   {
     }

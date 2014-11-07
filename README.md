@@ -41,6 +41,10 @@ Contributors
 Release Notes
 -------------
 
+**0.1.2**
+
+* Fix missing option to allow listening to incoming connection
+
 **0.1.1**
 
 * New options for live migration and ownership of qemu images

@@ -63,7 +63,13 @@ class libvirt (
          ],
          notify => Service[$libvirt::params::libvirt_service]
       }
-
+      augeas{ "libvirtd listen" :
+         context => "/files${libvirt::params::libvirtd_sysconf}",
+         changes => [
+             "set LIBVIRTD_ARGS '\"--listen\"'",
+         ],
+         notify => Service[$libvirt::params::libvirt_service]
+      }
   }
 
   file { $libvirt::params::qemu_conf:
