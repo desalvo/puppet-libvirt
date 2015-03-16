@@ -18,6 +18,9 @@
 # [*live_migration*]
 #   Set this to true to enable live migration
 #
+# [*rhev*]
+#   Use the ovirt rhev binaries for KVM
+#
 # === Examples
 #
 #  class {'libvirt':
@@ -42,13 +45,26 @@ class libvirt (
   $live_migration = false,
   $qemu_user = false,
   $qemu_group = false,
+  $rhev = false,
 ) inherits params {
 
   package { $libvirt::params::libvirt_packages: ensure => latest }
   package { $libvirt::params::qemu_tools: ensure => latest }
   case $virt_type {
      'kvm': {
-          package { $libvirt::params::kvm_package: ensure => latest, notify => Service[$libvirt::params::libvirt_service] }
+          if ($rhev) {
+              class {'::libvirt::repo': }
+              package { $libvirt::params::kvm_package_rhev:
+                  ensure  => latest,
+                  notify  => Service[$libvirt::params::libvirt_service],
+                  require => Yumrepo[$libvirt::params::kvm_repo_rhev]
+              }
+          } else {
+              package { $libvirt::params::kvm_package:
+                  ensure => latest,
+                  notify => Service[$libvirt::params::libvirt_service]
+              }
+          }
       }
       default: {}
   }

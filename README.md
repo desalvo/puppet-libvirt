@@ -22,6 +22,8 @@ Parameters:
 * **live_migration**: set this to true to enable the live migration
 * **qemu_user**: user for qemu images
 * **qemu_group**: group for qemu images
+* **rhev**: Use the ovirt rhev binaries for KVM
+
 
 **Configuring libvirt**
 
@@ -40,6 +42,10 @@ Contributors
 
 Release Notes
 -------------
+
+**0.1.3**
+
+* Support for oVirt RHEV binaries
 
 **0.1.2**
 
