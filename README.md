@@ -43,6 +43,10 @@ Contributors
 Release Notes
 -------------
 
+**0.1.4**
+
+* Fix qemu-img package when RHEV is enabled
+
 **0.1.3**
 
 * Support for oVirt RHEV binaries

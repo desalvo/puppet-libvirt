@@ -5,6 +5,7 @@ class libvirt::params {
       $libvirt_packages = ['libvirt', 'libvirt-client', 'libvirt-python', 'virt-manager', 'virt-viewer']
       $libvirt_service  = 'libvirtd'
       $qemu_tools       = 'qemu-img'
+      $qemu_tools_rhev  = 'qemu-img-rhev'
       $kvm_package      = 'qemu-kvm'
       $kvm_package_rhev = 'qemu-kvm-rhev'
       $kvm_repo_rhev    = 'qemu-kvm-rhev'
