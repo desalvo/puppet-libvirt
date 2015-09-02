@@ -15,7 +15,7 @@ class libvirt::params {
       $qemu_conf         = '/etc/libvirt/qemu.conf'
       $libvirtd_conf     = '/etc/libvirt/libvirtd.conf'
       $libvirtd_sysconf  = '/etc/sysconfig/libvirtd'
-      $qemu_sanlock_conf = '/etc/libvirt/libvirtd.conf'
+      $qemu_sanlock_conf = '/etc/libvirt/qemu-sanlock.conf'
       $sanlock_sysconf   = '/etc/sysconfig/sanlock'
     }
     default:   {
