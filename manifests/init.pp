@@ -74,7 +74,7 @@ class libvirt (
 ) inherits params {
 
   package { $libvirt::params::libvirt_packages: ensure => latest }
-  if ($rhev) {
+  if ($rhev and $virt_type == 'kvm') {
       package { $libvirt::params::qemu_tools_rhev: ensure => latest }
   } else {
       package { $libvirt::params::qemu_tools: ensure => latest }
