@@ -17,6 +17,9 @@
 # NB: the 'host_id' parameter must be set if enabling this
 #
 #auto_disk_leases = 1
+<% if @sanlock_auto_disk_leases -%>
+auto_disk_leases = 1
+<% end -%>
 
 #
 # The default location in which lockspaces are created when
@@ -59,11 +62,20 @@ host_id = <%= @sanlock_host_id %>
 # to enabled, otherwise it defaults to disabled.
 #
 #require_lease_for_disks = 1
+<% if @sanlock_require_lease_for_disks -%>
+require_lease_for_disks = 1
+<% end -%>
 
 #
 # The combination of user and group under which the sanlock
 # daemon runs. Libvirt will chown created files (like
 # content of disk_lease_dir) to make sure sanlock daemon can
 # access them. Accepted values are described in qemu.conf.
+# user = "root"
+# group = "root"
+<% if @sanlock_user and @sanlock_user != '' -%>
 user = "<%= @sanlock_user %>"
+<% end -%>
+<% if @sanlock_user and @sanlock_group != '' -%>
 group = "<%= @sanlock_group %>"
+<% end -%>

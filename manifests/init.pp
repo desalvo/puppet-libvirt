@@ -27,6 +27,22 @@
 # [*sanlock_wd*]
 #   Set this to false if you do not want to use the sanlock watchdog
 #
+# [*sanlock_auto_disk_leases*]
+#   The default sanlock configuration requires the management
+#   application to manually define <lease> elements in the
+#   guest configuration, typically one lease per disk. An
+#   alternative is to enable "auto disk lease" mode. In this
+#   usage, libvirt will automatically create a lockspace and
+#   lease for each fully qualified disk path. This works if
+#   you are able to ensure stable, unique disk paths across
+#   all hosts in a network.
+#
+# [*sanlock_require_lease_for_disks*]
+#   Flag to determine whether we allow starting of guests
+#   which do not have any <lease> elements defined in their
+#   configuration. If 'sanlock_auto_disk_leases' is false,
+#   this setting defaults to true, otherwise it defaults to false.
+#
 # [*sanlock_host_id*]
 #   Unique host id, must be set
 #
@@ -34,10 +50,10 @@
 #   Custom sanlock lease dir, defaults to /var/lib/libvirt/sanlock
 #
 # [*sanlock_user*]
-#   Custom sanlock user, defaults to root
+#   Custom sanlock user
 #
 # [*sanlock_group*]
-#   Custom sanlock group, defaults to root
+#   Custom sanlock group
 
 #
 # === Examples
@@ -68,9 +84,11 @@ class libvirt (
   $sanlock = false,
   $sanlock_wd = true,
   $sanlock_host_id = undef,
+  $sanlock_auto_disk_leases = false,
+  $sanlock_require_lease_for_disks = false,
   $sanlock_disk_lease_dir = undef,
-  $sanlock_user = 'root',
-  $sanlock_group = 'root'
+  $sanlock_user = undef,
+  $sanlock_group = undef
 ) inherits params {
 
   package { $libvirt::params::libvirt_packages: ensure => latest }
