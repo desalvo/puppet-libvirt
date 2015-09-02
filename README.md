@@ -23,6 +23,12 @@ Parameters:
 * **qemu_user**: user for qemu images
 * **qemu_group**: group for qemu images
 * **rhev**: Use the ovirt rhev binaries for KVM
+* **sanlock**: Set this to true if you want to use sanlock
+* **sanlock_wd**: Set this to false if you do not want to use the sanlock watchdoghdog
+* **sanlock_host_id**: Unique host id, must be set
+* **sanlock_disk_lease_dir**: Custom sanlock lease dir, defaults to /var/lib/libvirt/sanlock
+* **sanlock_user**: Custom sanlock user, defaults to root
+* **sanlock_group**: Custom sanlock group, defaults to root
 
 
 **Configuring libvirt**
@@ -42,6 +48,10 @@ Contributors
 
 Release Notes
 -------------
+
+**0.1.5**
+
+* Add sanlock support
 
 **0.1.4**
 

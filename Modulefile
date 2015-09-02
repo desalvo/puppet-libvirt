@@ -1,5 +1,5 @@
 name    'desalvo-libvirt'
-version '0.1.4'
+version '0.1.5'
 source 'https://github.com/desalvo/puppet-libvirt'
 author 'desalvo'
 license 'Apache License, Version 2.0'

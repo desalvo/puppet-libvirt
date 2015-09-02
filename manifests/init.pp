@@ -21,6 +21,25 @@
 # [*rhev*]
 #   Use the ovirt rhev binaries for KVM
 #
+# [*sanlock*]
+#   Set this to true if you want to use sanlock
+#
+# [*sanlock_wd*]
+#   Set this to false if you do not want to use the sanlock watchdog
+#
+# [*sanlock_host_id*]
+#   Unique host id, must be set
+#
+# [*sanlock_disk_lease_dir*]
+#   Custom sanlock lease dir, defaults to /var/lib/libvirt/sanlock
+#
+# [*sanlock_user*]
+#   Custom sanlock user, defaults to root
+#
+# [*sanlock_group*]
+#   Custom sanlock group, defaults to root
+
+#
 # === Examples
 #
 #  class {'libvirt':
@@ -46,6 +65,12 @@ class libvirt (
   $qemu_user = false,
   $qemu_group = false,
   $rhev = false,
+  $sanlock = false,
+  $sanlock_wd = true,
+  $sanlock_host_id = undef,
+  $sanlock_disk_lease_dir = undef,
+  $sanlock_user = 'root',
+  $sanlock_group = 'root'
 ) inherits params {
 
   package { $libvirt::params::libvirt_packages: ensure => latest }
@@ -92,11 +117,50 @@ class libvirt (
       }
   }
 
+  if ($sanlock) {
+      if (!$sanlock_host_id) fail {"Need to set sanlock_host_id when sanlock is enabled": }
+      if (!$sanlock_wd) $sanlockopts = "-U sanlock -G sanlock -w 0"
+
+      file { $libvirt::params::qemu_sanlock_conf:
+          ensure  => "file",
+          owner   => "root",
+          group   => "root",
+          mode    => "0644",
+          content => template("libvirt/qemu-sanlock.conf.erb"),
+          require => Package[$libvirt::params::sanlock_packages],
+          notify  => Service[$libvirt::params::sanlock_service]
+      }
+
+      file { $libvirt::params::sanlock_sysconf:
+          ensure  => "file",
+          owner   => "root",
+          group   => "root",
+          mode    => "0644",
+          content => template("libvirt/sanlock.sysconf.erb"),
+          require => Package[$libvirt::params::sanlock_packages],
+          notify  => Service[$libvirt::params::sanlock_service]
+      }
+
+      service { $libvirt::params::wdmd_service:
+         ensure     => running,
+         hasrestart => true,
+         require    => File[$libvirt::params::qemu_sanlock_conf]
+      }
+      service { $libvirt::params::sanlock_service:
+         ensure     => running,
+         hasrestart => true,
+         require    => [File[$libvirt::params::qemu_sanlock_conf],Service[$libvirt::params::wdmd_service]]
+      }
+      $libvirt_service_reqs = [File[$libvirt::params::qemu_conf],Service[$libvirt::params::sanlock_service]]
+  } else {
+      $libvirt_service_reqs = File[$libvirt::params::qemu_conf]
+  }
+
   file { $libvirt::params::qemu_conf:
-      ensure  => file,
+      ensure  => "file",
       owner   => "root",
       group   => "root",
-      mode    => 0644,
+      mode    => "0644",
       content => template("libvirt/qemu.conf.erb"),
       require => Package[$libvirt::params::libvirt_packages],
       notify  => Service[$libvirt::params::libvirt_service]
@@ -105,6 +169,6 @@ class libvirt (
   service { $libvirt::params::libvirt_service:
      ensure     => running,
      hasrestart => true,
-     require    => File[$libvirt::params::qemu_conf]
+     require    => $libvirt_service_reqs
   }
 }

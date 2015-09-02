@@ -1,3 +1,7 @@
+##
+## THIS FILE IS MANAGED BY PUPPET - DO NOT EDIT
+##
+
 # Master configuration file for the QEMU driver.
 # All settings described here are optional - if omitted, sensible
 # defaults are used.
@@ -366,6 +370,9 @@
 # disk), uncomment this
 #
 #lock_manager = "sanlock"
+<% if @sanlock -%>
+lock_manager = "sanlock"
+<% end -%>
 
 
 
