@@ -148,7 +148,7 @@ class libvirt (
           mode    => "0644",
           content => template("libvirt/qemu-sanlock.conf.erb"),
           require => Package[$libvirt::params::sanlock_packages],
-          notify  => Service[$libvirt::params::sanlock_service]
+          notify  => [Service[$libvirt::params::sanlock_service],Service[$libvirt::params::libvirt_service]]
       }
 
       file { $libvirt::params::sanlock_sysconf:
@@ -158,7 +158,7 @@ class libvirt (
           mode    => "0644",
           content => template("libvirt/sanlock.sysconf.erb"),
           require => Package[$libvirt::params::sanlock_packages],
-          notify  => Service[$libvirt::params::sanlock_service]
+          notify  => [Service[$libvirt::params::sanlock_service],Service[$libvirt::params::libvirt_service]]
       }
 
       service { $libvirt::params::wdmd_service:
