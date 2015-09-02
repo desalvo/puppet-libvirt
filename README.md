@@ -26,8 +26,8 @@ Parameters:
 * **sanlock**: Set this to true if you want to use sanlock
 * **sanlock_wd**: Set this to false if you do not want to use the sanlock watchdoghdog
 * **sanlock_host_id**: Unique host id, must be set
-* **sanlock_auto_disk_leases**: The default sanlock configuration requires the management application to manually define <lease> elements in the guest configuration, typically one lease per disk. An alternative is to enable "auto disk lease" mode. In this usage, libvirt will automatically create a lockspace and lease for each fully qualified disk path. This works if you are able to ensure stable, unique disk paths across all hosts in a network
-* **sanlock_require_lease_for_disks**: Flag to determine whether we allow starting of guests which do not have any <lease> elements defined in their configuration. If 'sanlock_auto_disk_leases' is false, this setting defaults to true, otherwise it defaults to false
+* **sanlock_auto_disk_leases**: The default sanlock configuration requires the management application to manually define < lease > elements in the guest configuration, typically one lease per disk. An alternative is to enable "auto disk lease" mode. In this usage, libvirt will automatically create a lockspace and lease for each fully qualified disk path. This works if you are able to ensure stable, unique disk paths across all hosts in a network
+* **sanlock_require_lease_for_disks**: Flag to determine whether we allow starting of guests which do not have any < lease > elements defined in their configuration. If 'sanlock_auto_disk_leases' is false, this setting defaults to true, otherwise it defaults to false
 * **sanlock_disk_lease_dir**: Custom sanlock lease dir, defaults to /var/lib/libvirt/sanlock
 * **sanlock_user**: Custom sanlock user, defaults to root
 * **sanlock_group**: Custom sanlock group, defaults to root
