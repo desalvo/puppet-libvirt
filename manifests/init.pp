@@ -121,6 +121,8 @@ class libvirt (
       if (!$sanlock_host_id) { fail ("Need to set sanlock_host_id when sanlock is enabled") }
       if (!$sanlock_wd) { $sanlockopts = "-U sanlock -G sanlock -w 0" }
 
+      package {$libvirt::params::sanlock_packages: ensure => latest}
+
       file { $libvirt::params::qemu_sanlock_conf:
           ensure  => "file",
           owner   => "root",
