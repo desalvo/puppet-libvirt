@@ -87,8 +87,8 @@ class libvirt (
   $sanlock_auto_disk_leases = false,
   $sanlock_require_lease_for_disks = false,
   $sanlock_disk_lease_dir = undef,
-  $sanlock_user = undef,
-  $sanlock_group = undef
+  $sanlock_user = "sanlock",
+  $sanlock_group = "sanlock"
 ) inherits params {
 
   package { $libvirt::params::libvirt_packages: ensure => latest }
